@@ -1,4 +1,3 @@
-#include "../libft.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -7,10 +6,11 @@
 
 #define LENGTH (size_t)INT_MAX + 5
 
-char* longstr;
 
 char *strbig(void)
 {
+	char* longstr;
+
 	printf("creating long string...\n");
 	longstr = malloc(LENGTH);
 	memset(longstr, 'a', LENGTH - 2);
@@ -19,9 +19,29 @@ char *strbig(void)
 	return (longstr);
 }
 
+#define BUFFER INT_MAX
+
+void	putstr_fd(char *str, int fd)
+{
+	size_t	len;
+
+	if (!str)
+		return ;
+	len = strlen(str);
+	if (len > BUFFER)
+	{
+		write(STDOUT_FILENO, str, BUFFER);
+		len -= BUFFER;
+		str += BUFFER;
+	}
+	write(STDOUT_FILENO, str, len);
+}
+
 int main(int argc, char* argv[])
 {
+	char	*longstr = strbig();
 	write(STDOUT_FILENO, longstr, LENGTH);
+	// putstr_fd(longstr, STDOUT_FILENO);
 	printf("check\n");
 	return 0;
 }
