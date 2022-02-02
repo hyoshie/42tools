@@ -28,9 +28,10 @@ void	putstr_fd(char *str, int fd)
 	if (!str)
 		return ;
 	len = strlen(str);
-	if (len > BUFFER)
+	while (len > BUFFER)
 	{
 		write(STDOUT_FILENO, str, BUFFER);
+		// write(STDOUT_FILENO, str, strlen(str));
 		len -= BUFFER;
 		str += BUFFER;
 	}
@@ -39,9 +40,13 @@ void	putstr_fd(char *str, int fd)
 
 int main(int argc, char* argv[])
 {
+	char	str[INT_MAX];
+	// char	str[LONG_MAX];
+
+
 	char	*longstr = strbig();
-	write(STDOUT_FILENO, longstr, LENGTH);
-	// putstr_fd(longstr, STDOUT_FILENO);
+	// write(STDOUT_FILENO, longstr, LENGTH);
+	putstr_fd(longstr, STDOUT_FILENO);
 	printf("check\n");
 	return 0;
 }
