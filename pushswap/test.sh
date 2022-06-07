@@ -10,25 +10,15 @@ FAIL=0
 
 reset_log()
 {
-	rm $VALIDATE_LOG
-	rm $COUNT_LOG
+	rm -f $VALIDATE_LOG
+	rm -f $COUNT_LOG
 }
 
-
-validate_operation()
+do_test()
 {
 	for i in $(seq $2); do
 		ARG=$(jot -r -s " " $1 $MIN $MAX)
-		# echo $ARG
 		$EXEC_FILE $ARG | $CHECKER $ARG >> $VALIDATE_LOG
-	done
-	grep -v OK $VALIDATE_LOG
-}
-
-count_operation()
-{
-	for i in $(seq $2); do
-		ARG=$(jot -r -s " " $1 $MIN $MAX)
 		$EXEC_FILE $ARG | wc -l >> $COUNT_LOG
 	done
 }
@@ -40,6 +30,14 @@ print_usage()
 
 print_result()
 {
+	echo -n "CHECHER: "
+	grep -v OK $VALIDATE_LOG
+	if [ $? == 1 ]; then
+		echo "OK:)"
+	else
+		echo "NG:("
+	fi
+
 	echo -n "AVRAGE: "
 	cat $COUNT_LOG | awk '{sum+=$1} END {print sum/NR}'
 }
@@ -49,8 +47,7 @@ if [ $# != 2 ]; then
 	print_usage
 else
 	reset_log
-	validate_operation $1 $2
-	count_operation $1 $2
+	do_test $1 $2
 	print_result
 fi
 ####Main Script#####

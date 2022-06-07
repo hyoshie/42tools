@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #define LEN (size_t)INT_MAX - 3
+// #define LEN (size_t)INT_MAX + 3
 
 int	main()
 {

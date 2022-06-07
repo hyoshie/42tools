@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "srcs/ft_printf.h"
+#include "ft_printf.h"
 
 void	end(void)__attribute__((destructor));
 

@@ -6,21 +6,24 @@ OPERATION_LOG=op.log
 
 test_nonarg()
 {
+	echo "--Case(No argument)--"
 	echo "./push_swap"
 	$EXEC_FILE
 }
 
 test_each()
 {
+	echo "--Case--"
 	echo "./push_swap" $@
+	echo
 	$EXEC_FILE $@ | $CHECKER $@
-	$EXEC_FILE $@ | tee $OPERATION_LOG | wc -l
-	cat $OPERATION_LOG
-}
-
-remove_tmpfiles()
-{
-	rm $OPERATION_LOG
+	echo
+	echo "--Operation--"
+	$EXEC_FILE $@
+	echo
+	echo "--Operation Num--"
+	$EXEC_FILE $@ | wc -l
+	echo
 }
 
 ARGS=(
@@ -36,9 +39,5 @@ test_nonarg
 for arg in "${ARGS[@]}"; do
 	read
 	test_each $arg
-	# echo "./push_swap" $arg
-	# $EXEC_FILE $arg | $CHECKER $arg
-	# $EXEC_FILE $arg | wc -l
 done
-remove_tmpfiles
 ####Main Script#####

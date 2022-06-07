@@ -12,15 +12,14 @@ store_output()
 
 validate_stdout()
 {
-	if [ $(wc -l $STDOUT_LOG | awk '{print $1}') != "0" ]; then
-		echo "EXISTS STDOUT		:" $@
+	if [ $(grep LEAK $STDERR_LOG | wc -l) != "0" ]; then
+		echo "###LEAK###	:" $@
 		FAIL=1
 	fi
 }
 
 validate_stderr()
 {
-	# if [ $(grep Error $STDERR_LOG | wc -l) != "1" ]; then
 	if [ -s $STDERR_LOG ]; then
 		echo "INVALID ERROR MASSAGE	:" $@
 		FAIL=1
@@ -109,8 +108,9 @@ ARGS=(
 ####Main Script#####
 for arg in "${ARGS[@]}"; do
 	store_output $arg
+	echo $arg
 	validate_stdout $arg
-	validate_stderr $arg
+	# validate_stderr $arg
 done
 
 remove_tmpfiles

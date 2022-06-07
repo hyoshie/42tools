@@ -16,7 +16,7 @@ int	main()
 	memset(str, 'a', LEN);
 	str[LEN] = '\0';
 
-	ret = printf("%sxxxxx", str);
+	ret = printf("%s%sxxxxx", str, "bb");
 	printf("\nret = %d\n", ret);
 
 	return (0);
